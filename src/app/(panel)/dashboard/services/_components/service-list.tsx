@@ -47,57 +47,59 @@ export function ServicesList({ services }: ServicesListProps) {
   }
 
   return (
-    <Card>
-      <div className="flex justify-between items-center flex-row w-full px-3">
-        <CardFooter className="flex flex-col items-start">
-          <CardTitle className="font-bold text-xl">Lista de serviços</CardTitle>
-          <CardDescription>
-            Veja a lista de serviços cadastrados ou crie um novo serviço.
-          </CardDescription>
-        </CardFooter>
-        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-          <DialogTrigger asChild>
-            <Button
-              size={"icon-sm"}
-              className=" bg-teal-600 hover:bg-teal-500 rounded-full w-fit font-black  duration-300 transition hover:scale-[1.02] p-2 "
-            >
-              <ImPlus className="text-3xl" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent
-            onInteractOutside={(e) => {
-              e.preventDefault();
-              setOpenDialog(false);
-              setEditService(null);
-            }}
-            className="rounded-2xl"
-          >
-            <ServiceForm
-              serviceId={editService ? editService?.id : undefined}
-              initialValue={
-                editService
-                  ? {
-                      name: editService?.name,
-                      price: (editService?.price / 100)
-                        .toFixed(2)
-                        .replace(".", ","),
-                      hours: Math.floor(editService?.duration / 60).toString(),
-                      minutes: (editService?.duration % 60).toString(),
-                    }
-                  : undefined
-              }
-              onCloseModal={() => {
+    <Card className="p-0">
+      <CardFooter className="flex items-center justify-between p-0 bg-teal-600 w-full rounded-none ">
+        <CardTitle className="font-bold text-xl  px-4 py-2 text-white">
+          Lista de serviços
+        </CardTitle>
+        <div className="flex justify-between items-center flex-row  px-3">
+          <Dialog open={openDialog} onOpenChange={setOpenDialog} >
+            <DialogTrigger asChild>
+              <Button
+                size={"icon-sm"}
+                className=" bg-slate-200 hover:bg-slate-100 rounded-full w-fit font-black  duration-300 transition hover:scale-[1.02] p-2  "
+              >
+                <ImPlus className="text-3xl text-teal-600 animate-pulse" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent
+              onInteractOutside={(e) => {
+                e.preventDefault();
                 setOpenDialog(false);
                 setEditService(null);
               }}
-            />
-          </DialogContent>
-        </Dialog>
-      </div>
+              className="rounded-2xl"
+            >
+              <ServiceForm
+                serviceId={editService ? editService?.id : undefined}
+                initialValue={
+                  editService
+                    ? {
+                        name: editService?.name,
+                        price: (editService?.price / 100)
+                          .toFixed(2)
+                          .replace(".", ","),
+                        hours: Math.floor(
+                          editService?.duration / 60,
+                        ).toString(),
+                        minutes: (editService?.duration % 60).toString(),
+                      }
+                    : undefined
+                }
+                onCloseModal={() => {
+                  setOpenDialog(false);
+                  setEditService(null);
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
+      </CardFooter>
+
       <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-2 ">
         {services.map((item) => (
           <Card key={item.id} className="p-0">
-            <CardHeader className="bg-teal-500 py-2">
+            <CardHeader className="bg-teal-600 py-2">
               <span className="font-extrabold text-slate-50 ">{item.name}</span>
             </CardHeader>
             <CardContent className="flex items-center justify-between pb-1 flex-row  ">

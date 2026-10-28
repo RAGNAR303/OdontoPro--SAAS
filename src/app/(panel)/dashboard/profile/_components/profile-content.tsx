@@ -92,9 +92,11 @@ export function ProfileContent({ user }: ProfileContentProps) {
     <div className="mx-auto">
       <Field>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Meu perfil</CardTitle>
+          <Card className="p-0">
+            <CardHeader className="p-0">
+              <CardTitle className="text-xl font-extrabold text-slate-50 bg-teal-600 py-2 px-4">
+                Meu perfil
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <Field>
@@ -280,7 +282,7 @@ export function ProfileContent({ user }: ProfileContentProps) {
                 type="submit"
                 className="px-8 bg-teal-600 hover:bg-teal-500 rounded-full w-full font-black  duration-300 transition hover:scale-[1.02] mb-3 "
               >
-                Salvar horário
+                Salvar modificações
               </Button>
             </CardContent>
           </Card>

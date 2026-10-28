@@ -37,7 +37,7 @@ export function ClinicHoursSelector<T extends FieldValues>({
 }: ClinicHoursSelectorProps<T>) {
   return (
     <div className="space-y-2">
-      <Label>Configurar horários</Label>
+      <Label className="font-bold text-slate-800">Configurar horários</Label>
 
       {/* Usamos o Controller para integrar o estado dos horários com o formulário */}
       <Controller
@@ -67,7 +67,7 @@ export function ClinicHoursSelector<T extends FieldValues>({
                   {selectedHours.length > 0
                     ? `${selectedHours.length} horários selecionados`
                     : "Clique para configurar horários"}
-                  <FaArrowRight />
+                  <FaArrowRight className="text-zinc-400" />
                 </Button>
               </DialogTrigger>
               <DialogContent>

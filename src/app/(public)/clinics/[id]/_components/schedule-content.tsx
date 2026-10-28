@@ -14,7 +14,7 @@ import {
 import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { cn } from "cn";
 import {
   Select,
@@ -45,6 +45,9 @@ interface TimeSlots {
 
 export function ScheduleContent({ clinic }: ScheduleContentProps) {
   const form = useScheduleForms();
+  const { watch } = form;
+  const selectedDate = watch("date");
+  const selectedServiceId = watch("serviceId");
   const [loading, setLoading] = useState(false);
   const [selectedTimes, setSelectedTimes] = useState("");
   const [availableTimesSlots, setAvailableTimesSlots] = useState<TimeSlots[]>(
@@ -52,18 +55,57 @@ export function ScheduleContent({ clinic }: ScheduleContentProps) {
   );
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [blockedTimes, setBlockedTimes] = useState<string[]>([]);
-  const { watch } = form;
 
   console.log(clinic.services);
+
+  console.log("DATA BOOLEAN", typeof !!watch("email"));
+
+  const fetchblockedTimes = useCallback(
+    async (date: Date): Promise<string[]> => {
+      setLoadingSlots(true);
+      try {
+        const dateString = date.toISOString().split("T")[0];
+        console.log(dateString);
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_URL}/api/schedule/get-appointments?userId=${clinic.id}&date=${dateString}`,
+        );
+
+        const blocked = await response.json();
+        setLoadingSlots(false);
+        return blocked;
+      } catch (error) {
+        console.log(error);
+        return [];
+      }
+    },
+    [clinic.id],
+  );
+
+  useEffect(() => {
+    if (selectedDate) {
+      fetchblockedTimes(selectedDate).then((blocked) => {
+        setBlockedTimes(blocked);
+
+        const times = clinic.times || [];
+        const finalSlots = times.map((time) => ({
+          time: time,
+          available: !blocked.includes(time),
+        }));
+
+        setAvailableTimesSlots(finalSlots);
+      });
+    }
+  }, [selectedDate, clinic.times, fetchblockedTimes, selectedTimes]);
 
   async function handleRegisterAppointment(formData: AppointmentFormData) {
     console.log(formData);
   }
 
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex flex-col min-h-screen ">
       <div className="h-32 bg-teal-500 shadow shadow-black/50 rounded-b-xl" />
-      <div className="flex flex-col items-center mx-auto max-w-3xl -mt-20">
+      <div className="flex flex-col items-center mx-auto w-full max-w-2xl -mt-20">
         <div className="w-40 h-40 relative rounded-full overflow-hidden border-2 border-teal-500 shadow shadow-black/50">
           <Image
             src={clinic.image ? clinic.image : imgTest}
@@ -87,7 +129,7 @@ export function ScheduleContent({ clinic }: ScheduleContentProps) {
 
         <form
           onSubmit={form.handleSubmit(handleRegisterAppointment)}
-          className="w-full"
+          className="w-19/20 py-2"
         >
           <Field>
             <FieldGroup className="gap-1">
@@ -115,131 +157,133 @@ export function ScheduleContent({ clinic }: ScheduleContentProps) {
                   </Field>
                 )}
               />
-              <Controller
-                name="email"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="email"
-                      className="font-bold text-slate-800"
-                    >
-                      E-mail
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="email"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="exemplo@email.com"
-                      autoComplete="on"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              {/* 
-              <div className="flex items-center mt-2 justify-center gap-2"> */}
-              <Controller
-                name="phone"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="phone"
-                      className="font-bold text-slate-800"
-                    >
-                      Telefone
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="phone"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="(11) 98765-4321"
-                      autoComplete="on"
-                      onChange={(e) => {
-                        const formattedValue = formatPhone(e.target.value);
+              <div className="w-full flex gap-2 flex-col md:flex-row items-center">
+                <Controller
+                  name="email"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel
+                        htmlFor="email"
+                        className="font-bold text-slate-800"
+                      >
+                        E-mail
+                      </FieldLabel>
+                      <Input
+                        {...field}
+                        id="email"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="exemplo@email.com"
+                        autoComplete="on"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="phone"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel
+                        htmlFor="phone"
+                        className="font-bold text-slate-800"
+                      >
+                        Telefone
+                      </FieldLabel>
+                      <Input
+                        {...field}
+                        id="phone"
+                        aria-invalid={fieldState.invalid}
+                        placeholder="(11) 98765-4321"
+                        autoComplete="on"
+                        onChange={(e) => {
+                          const formattedValue = formatPhone(e.target.value);
 
-                        field.onChange(formattedValue);
-                      }}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Controller
-                name="serviceId"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="serviceId"
-                      className="font-bold text-slate-800"
-                    >
-                      Selecione serviço
-                    </FieldLabel>
-                    <Select
-                      value={field.value}
-                      name={field.name}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={`${clinic.services.length}  Serviços disponiveis`}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {clinic.services?.map((service) => {
-                          return (
-                            <SelectItem
-                              value={service.id}
-                              key={service.id}
-                              aria-placeholder=""
-                              className={"flex items-center justify-between"}
-                            >
-                              {service.name} -<TbClockFilled />
-                              {Math.floor(service.duration / 60)}h{" "}
-                              {service.duration % 60} min
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
+                          field.onChange(formattedValue);
+                        }}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </div>
+              <div className="w-full flex gap-2 flex-col md:flex-row items-center">
+                <Controller
+                  name="serviceId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel
+                        htmlFor="serviceId"
+                        className="font-bold text-slate-800"
+                      >
+                        Selecione serviço
+                      </FieldLabel>
+                      <Select
+                        value={field.value}
+                        name={field.name}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={`${clinic.services.length}  Serviços disponiveis`}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {clinic.services?.map((service) => {
+                            return (
+                              <SelectItem
+                                value={service.id}
+                                key={service.id}
+                                aria-placeholder=""
+                                className={"flex items-center justify-between"}
+                              >
+                                {service.name} -<TbClockFilled />
+                                {Math.floor(service.duration / 60)}h{" "}
+                                {service.duration % 60} min
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
 
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Controller
-                name="date"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="date"
-                      className="font-bold text-slate-800"
-                    >
-                      Data do agendamento
-                    </FieldLabel>
-                    <CalanderDatePicker
-                      initialDate={new Date()}
-                      onChange={(date) => {
-                        if (date) {
-                          field.onChange(date);
-                        }
-                      }}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="date"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel
+                        htmlFor="date"
+                        className="font-bold text-slate-800"
+                      >
+                        Data do agendamento
+                      </FieldLabel>
+                      <CalanderDatePicker
+                        initialDate={new Date()}
+                        onChange={(date) => {
+                          if (date) {
+                            field.onChange(date);
+                          }
+                        }}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </div>
             </FieldGroup>
           </Field>
 
@@ -247,7 +291,7 @@ export function ScheduleContent({ clinic }: ScheduleContentProps) {
             <Button
               type="submit"
               disabled={
-                watch("date") ||
+                !!watch("date") ||
                 watch("email") ||
                 watch("name") ||
                 watch("phone") ||
