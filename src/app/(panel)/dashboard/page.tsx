@@ -1,18 +1,31 @@
+import { Button } from "@/components/ui/button";
 import getSession from "@/lib/getSession";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { TbCalendarPlus } from "react-icons/tb";
+import { CopyLinkButton } from "./_components/copy-link-button";
 export default async function Dashboard() {
   const session = await getSession();
-
 
   if (!session) {
     redirect("/");
   }
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <div className="h-150 bg-amber-400 "></div>
-      <div className="h-150 bg-blue-400 "></div>
-    </div>
+    <main className="flex flex-col">
+      <div className="self-end space-x-2">
+        <Link href={`/clinics/${session.user.id}`} target="_blank">
+          <Button
+            className={
+              "px-8 bg-teal-600 hover:bg-teal-500 font-black  duration-300 transition hover:scale-[1.02] mt-3"
+            }
+          >
+            <TbCalendarPlus className="w-10 h-10" /> Novo agendamento
+          </Button>
+        </Link>
+        <CopyLinkButton userId={session.user.id} />
+      </div>
+      <section className="grid grid-cols-1 lg:grid-cols-2"></section>
+    </main>
   );
 }
