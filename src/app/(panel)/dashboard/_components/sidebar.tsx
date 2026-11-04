@@ -53,7 +53,7 @@ export function SideBarDashboard({ children }: { children: React.ReactNode }) {
           "flex  flex-col justify-between  border-r bg-slate-200 transition-all duration-200 p-4 h-full rounded-r-2xl gap-2.5",
           {
             "w-20 items-center": isCollapsed,
-            "w-64": !isCollapsed,
+            "w-56": !isCollapsed,
             "hidden md:flex md:fixed": true,
           },
         )}
@@ -219,12 +219,12 @@ export function SideBarDashboard({ children }: { children: React.ReactNode }) {
                     variant={"ghost"}
                     onClick={handleLogout}
                     className={
-                      " flex text-slate-800 hover:text-red-400 bg-transparent hover:bg-transparent"
+                      " flex items-center text-slate-800 hover:text-red-400 bg-transparent hover:bg-transparent"
                     }
                   >
                     <FaPowerOff />
                     {!isCollapsed && (
-                      <span className="text-base font-bold w-20 h-20">
+                      <span className="text-base font-bold">
                         Sair
                       </span>
                     )}

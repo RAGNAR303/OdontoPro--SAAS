@@ -1,6 +1,5 @@
 "use client";
 
-import { DialogContent } from "@/components/ui/dialog";
 import { DialogForm, DialogFormData } from "./dialog-form";
 import {
   Field,

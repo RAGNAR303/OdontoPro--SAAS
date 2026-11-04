@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { TbCalendarPlus } from "react-icons/tb";
 import { CopyLinkButton } from "./_components/copy-link-button";
+import { Reminder } from "./_components/reminder/reminder";
 export default async function Dashboard() {
   const session = await getSession();
 
@@ -25,7 +26,10 @@ export default async function Dashboard() {
         </Link>
         <CopyLinkButton userId={session.user.id} />
       </div>
-      <section className="grid grid-cols-1 lg:grid-cols-2"></section>
+      <section className="grid grid-cols-1 lg:grid-cols-2">
+        <h1>Agenda</h1>
+        <Reminder userId={session.user.id} />
+      </section>
     </main>
   );
 }
