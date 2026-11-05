@@ -6,8 +6,6 @@ import { ReminderList } from "./reminder-list";
 export async function Reminder({ userId }: { userId: string }) {
   const reminder = await getReminder({ userId });
 
-
-
   return (
     <Card className="p-0">
       <CardFooter className="flex items-center justify-between py-0 bg-teal-600 w-full rounded-none ">
@@ -17,7 +15,7 @@ export async function Reminder({ userId }: { userId: string }) {
         <ReminderCreate />
       </CardFooter>
       <section>
-        <ReminderList reminder={reminder}/>
+        <ReminderList reminder={reminder} />
       </section>
     </Card>
   );

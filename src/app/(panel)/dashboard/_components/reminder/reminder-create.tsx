@@ -8,9 +8,20 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { ImPlus } from "react-icons/im";
+import { ReminderForm } from "./reminder-form";
+import { deleteReminder } from "../../_actions/delete-reminder";
 
 export function ReminderCreate() {
+  // const form = ReminderForm({
+  //  description: 
+  // });
   const [openDialog, setOpenDialog] = useState(false);
+
+
+  function handleCreateReminder(formData: FormData){
+
+
+  }
 
   return (
     <div>
@@ -52,6 +63,13 @@ export function ReminderCreate() {
               />
             </Field>
           </form> */}
+          <Button
+            className={
+              "px-8 bg-teal-600 hover:bg-teal-500 font-black  duration-300 transition hover:scale-[1.02] mt-3"
+            }
+          >
+            Salvar lembrete
+          </Button>
         </DialogContent>
       </Dialog>
     </div>
