@@ -1,6 +1,6 @@
 import { Card, CardFooter, CardTitle } from "@/components/ui/card";
 import { getReminder } from "../../_access-data/get-reminder";
-import { ReminderCreate } from "./reminder-create";
+import { ReminderContent } from "./reminder-content";
 import { ReminderList } from "./reminder-list";
 
 export async function Reminder({ userId }: { userId: string }) {
@@ -12,7 +12,7 @@ export async function Reminder({ userId }: { userId: string }) {
         <CardTitle className="font-bold text-xl  px-4 py-2 text-white">
           Lembretes
         </CardTitle>
-        <ReminderCreate />
+        <ReminderContent />
       </CardFooter>
       <section>
         <ReminderList reminder={reminder} />

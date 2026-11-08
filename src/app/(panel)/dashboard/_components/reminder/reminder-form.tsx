@@ -4,21 +4,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-interface ReminderFormProps {
-  description: string;
-}
-
-const formSchema = z.object({
-  description: z.string().min(1, "Descreva um  lembrete"),
+export const reminderSchema = z.object({
+  description: z.string().min(1, "A Descrição do lembrete e obrigatória"),
 });
 
-type ReminderFormData = z.infer<typeof formSchema>;
+export type ReminderFormData = z.infer<typeof reminderSchema>;
 
-export function ReminderForm({ description }: ReminderFormProps) {
-  return useForm({
-    resolver: zodResolver(formSchema),
+export function useReminderForm() {
+  return useForm<ReminderFormData>({
+    resolver: zodResolver(reminderSchema),
     defaultValues: {
-      description: description,
+      description: "",
     },
   });
 }

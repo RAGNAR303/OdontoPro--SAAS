@@ -13,7 +13,7 @@ export function CopyLinkButton({ userId }: { userId: string }) {
   }
 
   return (
-    <Button onClick={handlecopyLink}>
+    <Button onClick={handlecopyLink} className={"rounded-4xl"}>
       <FaLink />
     </Button>
   );

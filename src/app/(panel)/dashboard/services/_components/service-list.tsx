@@ -53,7 +53,15 @@ export function ServicesList({ services }: ServicesListProps) {
           Lista de serviços
         </CardTitle>
         <div className="flex justify-between items-center flex-row  px-3">
-          <Dialog open={openDialog} onOpenChange={setOpenDialog} >
+          <Dialog
+            open={openDialog}
+            onOpenChange={(open) => {
+              setOpenDialog(open);
+              if (!open) {
+                setEditService(null);
+              }
+            }}
+          >
             <DialogTrigger asChild>
               <Button
                 size={"icon-sm"}

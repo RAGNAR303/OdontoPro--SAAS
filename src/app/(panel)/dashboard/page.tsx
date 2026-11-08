@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { TbCalendarPlus } from "react-icons/tb";
 import { CopyLinkButton } from "./_components/copy-link-button";
 import { Reminder } from "./_components/reminder/reminder";
+import { Appoitments } from "./_components/appoitments/appoitments";
 export default async function Dashboard() {
   const session = await getSession();
 
@@ -18,7 +19,7 @@ export default async function Dashboard() {
         <Link href={`/clinics/${session.user.id}`} target="_blank">
           <Button
             className={
-              "px-8 bg-teal-600 hover:bg-teal-500 font-black  duration-300 transition hover:scale-[1.02] mt-3"
+              "px-8 bg-teal-600 hover:bg-teal-500 font-black rounded-full duration-300 transition hover:scale-[1.02] mt-3"
             }
           >
             <TbCalendarPlus className="w-10 h-10" /> Novo agendamento
@@ -27,7 +28,7 @@ export default async function Dashboard() {
         <CopyLinkButton userId={session.user.id} />
       </div>
       <section className="grid grid-cols-1 lg:grid-cols-2 mt-5">
-        <h1>Agenda</h1>
+        <Appoitments userId={session.user.id} />
         <Reminder userId={session.user.id} />
       </section>
     </main>

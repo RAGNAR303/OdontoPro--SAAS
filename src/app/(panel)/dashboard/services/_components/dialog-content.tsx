@@ -17,6 +17,11 @@ import { useState } from "react";
 import { cn } from "cn";
 import { useRouter } from "next/navigation";
 import { editService } from "../_actions/edit-service";
+import {
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface ServiceFormProps {
   serviceId?: string;
@@ -126,14 +131,14 @@ export function ServiceForm({
 
   return (
     <div>
-      <div className="space-y-1 mb-2">
-        <h3 className="font-bold text-xl">
+      <DialogHeader className="space-y-1 mb-2">
+        <DialogTitle className="font-bold text-xl">
           {serviceId ? "Editar serviço" : "Novo serviço"}
-        </h3>
-        <p className="text-slate-600">
+        </DialogTitle>
+        <DialogDescription className="text-slate-600">
           {serviceId ? "Editar serviço existente" : "Adicione um novo serviço"}
-        </p>
-      </div>
+        </DialogDescription>
+      </DialogHeader>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Field>
           <FieldGroup>
@@ -217,7 +222,7 @@ export function ServiceForm({
                     </Field>
                   )}
                 />
-                <strong className="self-center text-4xl">:</strong>
+
                 <Controller
                   name="minutes"
                   control={form.control}

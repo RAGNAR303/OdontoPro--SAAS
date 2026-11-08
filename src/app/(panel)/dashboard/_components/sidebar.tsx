@@ -254,7 +254,7 @@ function SidebarLinks({ href, icon, isCollapsed, label, pathname }: LinkProps) {
     <Link
       href={href}
       className={clsx(
-        "flex items-center gap-2 p-2 rounded transition-all transition-discrete ",
+        "flex items-center gap-2 py-2 px-4 rounded-full transition-all transition-discrete ",
         {
           " bg-teal-600 text-slate-100 scale-[1.02] shadow-2xs shadow-black/50":
             pathname === href,

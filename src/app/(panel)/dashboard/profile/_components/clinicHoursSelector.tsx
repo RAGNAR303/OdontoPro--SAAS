@@ -8,6 +8,9 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -71,15 +74,15 @@ export function ClinicHoursSelector<T extends FieldValues>({
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <div>
-                  <h3 className={"text-2xl font-semibold"}>
+                <DialogHeader>
+                  <DialogTitle className={"text-2xl font-semibold"}>
                     Horários da clínica
-                  </h3>
-                  <p>
+                  </DialogTitle>
+                  <DialogDescription>
                     Selecione os horários que sua clínica esta disponivel para o
                     atendimento.
-                  </p>
-                </div>
+                  </DialogDescription>
+                </DialogHeader>
 
                 <section className="space-y-2">
                   <p className="text-center  font-bold text-slate-800">

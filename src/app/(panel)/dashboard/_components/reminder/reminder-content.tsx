@@ -4,23 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { ImPlus } from "react-icons/im";
-import { ReminderForm } from "./reminder-form";
-import { deleteReminder } from "../../_actions/delete-reminder";
+import { ReminderFormData, useReminderForm } from "./reminder-form";
+import { toast } from "sonner";
+import { createReminder } from "../../_actions/create-reminder";
 
-export function ReminderCreate() {
-  // const form = ReminderForm({
-  //  description: 
-  // });
+export function ReminderContent() {
+  const form = useReminderForm();
   const [openDialog, setOpenDialog] = useState(false);
 
+  async function handleCreateReminder(value: ReminderFormData) {
+    if (!value) {
+      toast.error("Campo de lembrete e obrigatório");
+      return;
+    }
 
-  function handleCreateReminder(formData: FormData){
+    const response = await createReminder({ description: value.description });
 
+    if (!response.data) {
+      toast.error(response.error);
+      return;
+    }
 
+    toast.success(response.data);
   }
 
   return (
@@ -34,11 +48,14 @@ export function ReminderCreate() {
             <ImPlus className="text-3xl text-teal-600 animate-pulse" />
           </Button>
         </DialogTrigger>
-        <DialogContent>
-          <h2>Novo lembrete</h2>
-          {/* <form>
+        <DialogContent className="flex flex-col rounded-md max-w-106">
+          <DialogTitle className="font-bold text-xl text-slate-900">
+            Novo lembrete
+          </DialogTitle>
+          <form onSubmit={form.handleSubmit(handleCreateReminder)}>
             <Field>
               <Controller
+                control={form.control}
                 name="description"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
@@ -46,14 +63,14 @@ export function ReminderCreate() {
                       htmlFor="description"
                       className="font-bold text-slate-800"
                     >
-                      Descrição
+                      Descrição do lembrete
                     </FieldLabel>
                     <Textarea
                       {...field}
                       id="description"
                       aria-invalid={fieldState.invalid}
-                      placeholder="Digite a nome do serviço..."
-                      autoComplete="on"
+                      placeholder="Digite o lembrete..."
+                      className="resize-none"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -62,14 +79,15 @@ export function ReminderCreate() {
                 )}
               />
             </Field>
-          </form> */}
-          <Button
-            className={
-              "px-8 bg-teal-600 hover:bg-teal-500 font-black  duration-300 transition hover:scale-[1.02] mt-3"
-            }
-          >
-            Salvar lembrete
-          </Button>
+            <Button
+              type="submit"
+              className={
+                "px-8 bg-teal-600 hover:bg-teal-500 font-black w-full duration-300 transition hover:scale-[1.02] mt-3"
+              }
+            >
+              Salvar lembrete
+            </Button>
+          </form>
         </DialogContent>
       </Dialog>
     </div>

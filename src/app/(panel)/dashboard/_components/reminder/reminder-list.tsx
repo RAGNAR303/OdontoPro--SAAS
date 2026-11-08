@@ -41,7 +41,7 @@ export function ReminderList({ reminder }: ReminderListProps) {
             <p className="text-slate-800 font-semibold"> {item.description}</p>
             <Button
               variant={"ghost"}
-              size={"icon-sm"}
+              size={"icon-xs"}
               onClick={() => handleDeleteReminder(item.id)}
               className={
                 "  bg-red-300 hover:bg-red-500    absolute  -top-3 right-0 rounded-full duration-300 "
