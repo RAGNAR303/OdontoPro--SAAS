@@ -32,7 +32,7 @@ export function ReminderList({ reminder }: ReminderListProps) {
           Nenhum lembrete registrado...
         </p>
       )}
-      <ScrollArea className={"w-full h-100  px-1"}>
+      <ScrollArea className={"w-full h-72 px-1"}>
         {reminder.map((item) => (
           <article
             key={item.id}

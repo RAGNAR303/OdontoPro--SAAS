@@ -27,7 +27,7 @@ export default async function Dashboard() {
         </Link>
         <CopyLinkButton userId={session.user.id} />
       </div>
-      <section className="grid grid-cols-1 lg:grid-cols-2 mt-5">
+      <section className="grid grid-cols-1 lg:grid-cols-2 mt-5 gap-5">
         <Appoitments userId={session.user.id} />
         <Reminder userId={session.user.id} />
       </section>

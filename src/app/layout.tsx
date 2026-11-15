@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SessionAuthProvider } from "@/components/session-auth";
 import { Toaster } from "sonner";
+import QueryClientContext from "@/providers/client-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -37,8 +38,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <SessionAuthProvider>
-          <Toaster expand  duration={2500} position="top-right" richColors />
-          {children}
+          <QueryClientContext>
+            <Toaster expand duration={2500} position="top-right" richColors />
+            {children}
+          </QueryClientContext>
         </SessionAuthProvider>
       </body>
     </html>
