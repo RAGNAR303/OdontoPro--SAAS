@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { AppoitmentDiaolg } from "./appoitments-diaolg";
 import { useState } from "react";
+import { AppoitmentDataPicker } from "./appoitments-data-picker";
 
 export type AppoitmentWithService = Prisma.AppointmentGetPayload<{
   include: {
@@ -111,10 +112,10 @@ export function AppoitmentsList({ times }: { times: string[] }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <Card className="p-0 bg-slate-200">
         <CardHeader className="flex items-center justify-between py-0 bg-teal-600 w-full rounded-none ">
-          <CardTitle className="font-bold text-xl  px-4 py-2 text-white">
+          <CardTitle className="font-bold text-[13px] md:text-xl  px-4 py-2 text-white">
             Agendamentos
           </CardTitle>
-          <button>Data</button>
+          <AppoitmentDataPicker />
         </CardHeader>
         <CardContent className="px-1">
           <ScrollArea className={"h-100 mb-3"}>

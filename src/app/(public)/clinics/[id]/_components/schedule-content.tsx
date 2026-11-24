@@ -31,6 +31,7 @@ import { Label } from "@/components/ui/label";
 import { createAppointment } from "../_actions/create-appointments";
 import { toast } from "sonner";
 import { Footer } from "@/app/(public)/_components/footer";
+import { useRouter } from "next/navigation";
 
 export type UserWithServiceAndSubscription = Prisma.UserGetPayload<{
   include: {
@@ -62,6 +63,7 @@ export function ScheduleContent({ clinic }: ScheduleContentProps) {
 
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [blockedTimes, setBlockedTimes] = useState<string[]>([]);
+  const router = useRouter();
 
   const fetchBlockedTimes = useCallback(
     async (date: Date): Promise<string[]> => {
@@ -134,7 +136,10 @@ export function ScheduleContent({ clinic }: ScheduleContentProps) {
     toast.success("Agendamento realizado com sucesso!");
     setLoading(false);
     form.reset();
+    form.resetField("date");
     setSelectedTime("");
+    setSelectedService("");
+    router.refresh();
   }
 
   return (
@@ -185,6 +190,7 @@ export function ScheduleContent({ clinic }: ScheduleContentProps) {
                       aria-invalid={fieldState.invalid}
                       placeholder="Digite seu nome..."
                       autoComplete="on"
+                      className="capitalize"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

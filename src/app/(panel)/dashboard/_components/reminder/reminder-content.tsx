@@ -30,11 +30,13 @@ export function ReminderContent() {
     const response = await createReminder({ description: value.description });
 
     if (!response.data) {
+      console.log(response.error);
       toast.error(response.error);
       return;
     }
 
     toast.success(response.data);
+    form.reset();
   }
 
   return (

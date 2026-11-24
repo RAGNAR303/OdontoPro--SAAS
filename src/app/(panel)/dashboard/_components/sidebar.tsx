@@ -38,6 +38,7 @@ import {
 export function SideBarDashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { update } = useSession();
   const router = useRouter();
   async function handleLogout() {
@@ -50,7 +51,7 @@ export function SideBarDashboard({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen w-full">
       <aside
         className={clsx(
-          "flex  flex-col justify-between  border-r bg-slate-200 transition-all duration-200 p-4 h-full rounded-r-2xl gap-2.5",
+          "flex  flex-col justify-between  border-r bg-slate-200 transition-all duration-200 p-4 h-full rounded-r-2xl gap-2.5 drop-shadow drop-shadow-black/15 ",
           {
             "w-20 items-center": isCollapsed,
             "w-56": !isCollapsed,
@@ -151,7 +152,7 @@ export function SideBarDashboard({ children }: { children: React.ReactNode }) {
         })}
       >
         <header className="md:hidden flex sticky top-0 bg-slate-200 shadow-2xs shadow-black/20 px-3 rounded-b-2xl z-30 ">
-          <Sheet>
+          <Sheet open={isOpen} onOpenChange={setIsOpen} >
             <div className="flex items-center gap-2 p-2">
               <SheetTrigger
                 className={
@@ -169,7 +170,7 @@ export function SideBarDashboard({ children }: { children: React.ReactNode }) {
               </h1>
             </div>
 
-            <SheetContent side="left" className={"p-2 bg-slate-200 max-w-xs"}>
+            <SheetContent side="left" className={"p-2 bg-slate-200 max-w-xs"} >
               <SheetHeader className="border-b border-slate-400">
                 <p className="font-extrabold text-2xl">
                   Odonto<span className="text-teal-600">PRO</span>
@@ -224,9 +225,7 @@ export function SideBarDashboard({ children }: { children: React.ReactNode }) {
                   >
                     <FaPowerOff />
                     {!isCollapsed && (
-                      <span className="text-base font-bold">
-                        Sair
-                      </span>
+                      <span className="text-base font-bold">Sair</span>
                     )}
                   </Button>
                 </div>

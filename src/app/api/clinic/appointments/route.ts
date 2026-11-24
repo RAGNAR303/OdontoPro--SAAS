@@ -23,9 +23,12 @@ export const GET = auth(async function GET(request) {
 
     try {
         const [year, month, day] = dataString.split("-").map(Number)
-        const startDay = new Date(year, month - 1, day, 0, 0, 0, 0)
-        const endDay = new Date(year, month - 1, day, 23, 59, 59, 999)
 
+        const startDay = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0))
+        const endDay = new Date(Date.UTC(year, month - 1, day, 23, 59, 59, 999))
+
+        console.log("Inicio", startDay)
+        console.log("Final", endDay)
 
         const appointment = await prisma.appointment.findMany({
             where: {

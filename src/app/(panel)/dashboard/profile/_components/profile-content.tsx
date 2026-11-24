@@ -255,7 +255,11 @@ export function ProfileContent({ user }: ProfileContentProps) {
                                 }
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Selecione o status da clinica" />
+                                  <SelectValue placeholder="Selecione o status da clinica">
+                                    {field.value === "active"
+                                      ? "ATIVO(clinica aberta)"
+                                      : "INATIVO(clinica fechada)"}
+                                  </SelectValue>
                                 </SelectTrigger>
                                 <SelectContent className="font-bold text-slate-800">
                                   <SelectItem value={"active"}>

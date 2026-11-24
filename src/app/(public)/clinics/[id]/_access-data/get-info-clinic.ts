@@ -29,9 +29,9 @@ export async function getAllInfoClinic({ userId }: { userId: string }) {
         return user
 
     } catch (error) {
-       
 
-        return "Não foi possivel obter informações da clinica"
+        console.log("Não foi possivel exibir informações")
+        return null
     }
 
 

@@ -31,7 +31,12 @@ export function AppoitmentDiaolg({ appoitment }: AppoitmentDiaolgProps) {
           <p className="text-slate-800 font-bold">
             Data do agendamento:{" "}
             <span className="text-slate-600">
-              {format(appoitment.appointmentDate, "dd/MM/yyyy")}
+              {new Intl.DateTimeFormat("pt-BR", {
+                timeZone: "UTC",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              }).format(new Date(appoitment.appointmentDate))}
             </span>
           </p>
           <p className="text-slate-800 font-bold mb-3">

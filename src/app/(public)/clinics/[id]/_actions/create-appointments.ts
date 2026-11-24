@@ -38,9 +38,9 @@ export async function createAppointment(formaData: CreateAppointmentData) {
     const month = date.getMonth()
     const day = date.getDate()
 
-    const appointmentDate = new Date(year, month, day, 0, 0, 0, 0)
+    const appointmentDate = new Date(Date.UTC(year, month, day, 0, 0, 0, 0))
 
-
+    console.log("Data agendada", appointmentDate)
     try {
 
 
@@ -56,7 +56,7 @@ export async function createAppointment(formaData: CreateAppointmentData) {
             }
         })
 
-        revalidatePath('/clinics')
+        revalidatePath('/clinics/[id]')
 
         return {
             data: createAppointment
